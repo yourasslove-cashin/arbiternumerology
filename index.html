@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARBITER - Профессиональный нумеролог | Персональный анализ по числам судьбы</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background-attachment: fixed;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="50%" y="50%" font-family="Arial" font-size="10" text-anchor="middle" dominant-baseline="middle">9 7 5 3 1 2 4 6 8</text></svg>');
+        }
+        
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 1.4rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #e74c3c;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .cta-button:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+        
+        /* Sections */
+        section {
+            padding: 5rem 0;
+        }
+        
+        .section-dark {
+            background: #2c3e50;
+            color: white;
+        }
+        
+        .section-light {
+            background: white;
+        }
+        
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        h2:after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: #667eea;
+            margin: 15px auto;
+        }
+        
+        .section-dark h2:after {
+            background: #e74c3c;
+        }
+        
+        /* Bot Section */
+        .bot-container {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+        
+        .bot-form {
+            display: grid;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .form-group input {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+        
+        .loading-dots {
+            display: inline-block;
+        }
+        
+        .loading-dots:after {
+            content: '';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+        
+        @keyframes dots {
+            0%, 20% { content: ''; }
+            40% { content: '.'; }
+            60% { content: '..'; }
+            80%, 100% { content: '...'; }
+        }
+        
+        .result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+            display: none;
+            white-space: pre-line;
+        }
+        
+        /* About */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .about-text {
+            font-size: 1.1rem;
+        }
+        
+        .about-image {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 400px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        /* Services */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .service-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .price {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 1rem 0;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .testimonial {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-author {
+            font-weight: bold;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+        
+        .cta-section h2 {
+            margin-bottom: 2rem;
+        }
+        
+        /* Footer */
+        footer {
+            background: #34495e;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .about-content {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .bot-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-pattern"></div>
+        <div class="container header-content">
+            <h1>ARBITER</h1>
+            <p class="tagline">Профессиональный нумеролог с 10-летним опытом</p>
+            <p>Раскройте тайны вашей судьбы через древнее знание чисел</p>
+            <a href="#bot" class="cta-button">Бесплатный анализ</a>
+        </div>
+    </header>
+
+    <!-- Numerology Bot Section -->
+    <section class="section-light" id="bot">
+        <div class="container">
+            <h2>Бесплатный нумерологический анализ</h2>
+            <div class="bot-container">
+                <div class="bot-form">
+                    <div class="form-group">
+                        <label for="name">Ваше имя:</label>
+                        <input type="text" id="name" placeholder="Введите ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="birthDate">Дата рождения:</label>
+                        <input type="text" id="birthDate" placeholder="04.01.2002" required>
+                    </div>
+                    <button class="cta-button" onclick="calculateNumerology()">🔮 Получить анализ</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <h3>Анализирую ваши данные<span class="loading-dots"></span></h3>
+                    <p>Расчитываю числа судьбы, талантов и предназначения</p>
+                </div>
+                
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-dark">
+        <div class="container">
+            <h2>О мастере</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p><strong>ARBITER</strong> - профессиональный нумеролог, посвятивший изучению чисел более 10 лет. Родился и вырос в семье духовных практиков, где с раннего детства перенимал древние знания о силе чисел и их влиянии на человеческую судьбу.</p>
+                    <br>
+                    <p>Мой подход сочетает в себе мудрость традиционных нумерологических систем и современное понимание психологии. Каждый анализ - это не просто расчет чисел, а глубокое погружение в вашу уникальную энергетическую матрицу.</p>
+                    <br>
+                    <p>За годы практики я помог более 1000 людям найти свой путь, понять предназначение и раскрыть скрытые таланты через язык чисел.</p>
+                </div>
+                <div class="about-image">
+                    "Числа - это ключ к пониманию<br>вашей истинной природы"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section-light" id="consultation">
+        <div class="container">
+            <h2>Персональные консультации</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">🔮</div>
+                    <h3>Базовый пакет "3 вопроса"</h3>
+                    <p>Глубокий анализ трех ключевых вопросов о вашей жизни с подробными пояснениями</p>
+                    <div class="price">2 900 ₽</div>
+                    <a href="#contact" class="cta-button">Выбрать пакет</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">✨</div>
+                    <h3>Расширенный пакет "10 вопросов"</h3>
+                    <p>Комплексный анализ всех сфер жизни: отношения, карьера, здоровье, финансы</p>
+                    <div class="price">7 900 ₽</div>
+                    <a href="#contact" class="cta-button">Выбрать пакет</a>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🌟</div>
+                    <h3>VIP консультация</h3>
+                    <p>Полное погружение в вашу нумерологическую карту с рекомендациями на год вперед</p>
+                    <div class="price">15 900 ₽</div>
+                    <a href="#contact" class="cta-button">Забронировать</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section class="section-dark">
+        <div class="container">
+            <h2>Почему выбирают мои консультации?</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Уникальные преимущества подхода:</h3>
+                    <br>
+                    <p>✅ <strong>Глубина анализа</strong> - рассматриваю не только основные числа, но и их энергетические связи</p>
+                    <p>✅ <strong>10-летний опыт</strong> - проверенные методики, отточенные годами практики</p>
+                    <p>✅ <strong>Индивидуальный подход</strong> - каждый человек уникален, как и его числовая матрица</p>
+                    <p>✅ <strong>Практические рекомендации</strong> - не просто анализ, а конкретные шаги к улучшению жизни</p>
+                    <p>✅ <strong>Конфиденциальность</strong> - вся информация строго конфиденциальна</p>
+                </div>
+                <div class="about-image">
+                    "В каждом числе - ключ<br>к пониманию судьбы"
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="section-light">
+        <div class="container">
+            <h2>Отзывы клиентов</h2>
+            <div class="testimonials">
+                <div class="testimonial">
+                    <p class="testimonial-text">"Консультация с ARBITER перевернула мое представление о себе. Числа показали мне путь, о котором я даже не догадывалась!"</p>
+                    <p class="testimonial-author">- Марина, 34 года</p>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-text">"Бесплатный анализ был настолько точен, что я сразу заказал расширенную консультацию. Результаты превзошли ожидания!"</p>
+                    <p class="testimonial-author">- Алексей, 41 год</p>
+                </div>
+                <div class="testimonial">
+                    <p class="testimonial-text">"Чувствуется глубина и многолетний опыт в каждом анализе. Рекомендую всем, кто ищет ответы через нумерологию."</p>
+                    <p class="testimonial-author">- Светлана, 28 лет</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="cta-section section-dark" id="contact">
+        <div class="container">
+            <h2>Готовы раскрыть тайны вашей судьбы?</h2>
+            <p>Свяжитесь со мной для персональной консультации</p>
+            <br>
+            <a href="https://wa.me/79001234567" class="cta-button">💬 Написать в WhatsApp</a>
+            <br><br>
+            <a href="https://t.me/arbiter_numerology" class="cta-button">📱 Написать в Telegram</a>
+            <br><br>
+            <p>Или напишите на email: <strong>arbiter.numerology@mail.ru</strong></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>ARBITER &copy; 2024. Профессиональная нумерология</p>
+            <p>Все права защищены. Конфиденциальность гарантирована.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Numerology Bot JavaScript Implementation
+        class NumerologyBot {
+            constructor() {
+                this.letters_map = {
+                    'А': 1, 'Б': 2, 'В': 3, 'Г': 4, 'Д': 5, 'Е': 6, 'Ё': 6, 'Ж': 7, 'З': 8,
+                    'И': 1, 'Й': 2, 'К': 3, 'Л': 4, 'М': 5, 'Н': 6, 'О': 7, 'П': 8,
+                    'Р': 9, 'С': 1, 'Т': 2, 'У': 3, 'Ф': 4, 'Х': 5, 'Ц': 6, 'Ч': 7,
+                    'Ш': 8, 'Щ': 9, 'Ъ': 1, 'Ы': 2, 'Ь': 3, 'Э': 4, 'Ю': 5, 'Я': 6
+                };
+            }
+
+            reduce_number(number) {
+                if (number === 11 || number === 22 || number === 33) {
+                    return number;
+                }
+                while (number > 9) {
+                    number = number.toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+                }
+                return number;
+            }
+
+            calculate_life_path(birth_date) {
+                try {
+                    const clean_date = birth_date.replace(/[^\d]/g, '');
+                    const total = clean_date.split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+                    return this.reduce_number(total);
+                } catch {
+                    return 0;
+                }
+            }
+
+            calculate_expression(name) {
+                try {
+                    let total = 0;
+                    for (let letter of name.toUpperCase()) {
+                        if (this.letters_map[letter]) {
+                            total += this.letters_map[letter];
+                        }
+                    }
+                    return this.reduce_number(total);
+                } catch {
+                    return 0;
+                }
+            }
+
+            get_interpretation(number_type, number) {
+                const interpretations = {
+                    'life_path': {
+                        1: "ВЫ - ЛИДЕР и ПЕРВОПРОХОДЕЦ. Вы рождены, чтобы вести за собой, создавать новое и проявлять инициативу.",
+                        2: "ВЫ - ДИПЛОМАТ и МИРОТВОРЕЦ. Ваша сила в чувствительности, тактичности и умении объединять людей.",
+                        3: "ВЫ - ТВОРЕЦ и ОПТИМИСТ. Вы приносите радость, вдохновение и творчество в этот мир.",
+                        4: "ВЫ - ПРАКТИК и СТРОИТЕЛЬ. Вы создаете прочный фундамент, надежны и трудолюбивы.",
+                        5: "ВЫ - ИССЛЕДОВАТЕЛЬ и СВОБОДНЫЙ ДУХ. Вы жаждете перемен, приключений и новых впечатлений.",
+                        6: "ВЫ - ОПЕКУН и ГАРМОНИЗАТОР. Вы создаете уют, заботитесь о близких и приносите гармонию.",
+                        7: "ВЫ - АНАЛИТИК и МУДРЕЦ. Вы ищете истину, обладаете глубокой интуицией и любите знания.",
+                        8: "ВЫ - ОРГАНИЗАТОР и ДЕЛЕЦ. Вы умеете управлять ресурсами, достигаете успеха в материальном мире.",
+                        9: "ВЫ - ГУМАНИСТ и МУДРЫЙ НАСТАВНИК. Ваше предназначение - служение человечеству и сострадание.",
+                        11: "ВЫ - ПРОСВЕТЛЕННЫЙ и ВДОХНОВИТЕЛЬ. Вы обладаете мощной интуицией и духовным потенциалом.",
+                        22: "ВЫ - СТРОИТЕЛЬ МИРА. Вы можете воплощать грандиозные идеи в реальность.",
+                        33: "ВЫ - УЧИТЕЛЬ ЧЕЛОВЕЧЕСТВА. Ваша миссия - нести любовь и мудрость миру."
+                    },
+                    'expression': {
+                        1: "Ваши таланты: лидерство, новаторство, самостоятельность",
+                        2: "Ваши таланты: дипломатия, сотрудничество, эмпатия", 
+                        3: "Ваши таланты: творчество, общение, артистизм",
+                        4: "Ваши таланты: организация, практичность, надежность",
+                        5: "Ваши таланты: адаптивность, коммуникабельность, находчивость",
+                        6: "Ваши таланты: забота, ответственность, создание гармонии",
+                        7: "Ваши таланты: анализ, исследование, интуиция",
+                        8: "Ваши таланты: управление, предпринимательство, стратегия",
+                        9: "Ваши таланты: сострадание, мудрость, гуманизм"
+                    }
+                };
+                return interpretations[number_type]?.[number] || "Уникальная комбинация!";
+            }
+
+            generate_report(name, birth_date) {
+                const life_path = this.calculate_life_path(birth_date);
+                const expression = this.calculate_expression(name);
+
+                const analysis = `
+${name}, ваше сочетание чисел Судьбы ${life_path} и Талантов ${expression} создает уникальную личность.
+
+• Ваша миссия: ${this.get_interpretation('life_path', life_path)}
+• Ваши таланты: ${this.get_interpretation('expression', expression)}
+
+💡 РЕКОМЕНДАЦИИ:
+• Прислушивайтесь к своей интуиции
+• Развивайте свои природные таланты  
+• Используйте сильные стороны для помощи другим
+
+✨ Этот бесплатный анализ показывает только основы. Для глубокого понимания вашего предназначения рекомендую полную консультацию!
+                `;
+
+                return analysis;
+            }
+        }
+
+        // UI Functions
+        function calculateNumerology() {
+            const name = document.getElementById('name').value.trim();
+            const birthDate = document.getElementById('birthDate').value.trim();
+
+            if (!name || !birthDate) {
+                alert('Пожалуйста, заполните все поля');
+                return;
+            }
+
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            setTimeout(() => {
+                const bot = new NumerologyBot();
+                const report = bot.generate_report(name, birthDate);
+                
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                result.innerHTML = report;
+            }, 2000);
+        }
+
+        // Smooth scroll and other UI enhancements
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Enter key support for form
+        document.getElementById('birthDate').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                calculateNumerology();
+            }
+        });
+    </script>
+</body>
+</html>
